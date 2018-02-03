@@ -1,27 +1,42 @@
 var exec = require('cordova/exec');
 
-
 var MediaPicker = {
-    getMedias:function(arg0, success, error) {
-		alert(navigator.userAgent);
-		if(navigator.userAgent.match(/Android/i)){
-			arg0.selectMode = 100;
-			arg0.showThumbnail = true;
-			exec(success, error, "MediaPicker", "getMedias", [arg0]);
-		}else if(navigator.userAgent.match(/iPhone|iPad|iPod/i)){
-			if (!arg0) {
-				arg0 = {};
-			}
+    getMedias:function(arg0) {
+		return new Promise(function(resolve, reject) {
+			if(navigator.userAgent.match(/Android/i)){
+				arg0.selectMode = 100;
+				arg0.showThumbnail = true;
+				exec(function(res){
+						resolve(res);
+					}, function(err){
+						reject(err);
+					}, "MediaPicker", "getMedias", [arg0]);
+			}else if(navigator.userAgent.match(/iPhone|iPad|iPod/i)){
+				if (!arg0) {
+					arg0 = {};
+				}
 	
-			var params = {
-				maximumImagesCount: arg0.maxSelectCount ? arg0.maxSelectCount : 9,
-				width: arg0.width ? arg0.width : 1024,
-				height: arg0.height ? arg0.height : 1024,
-				quality: arg0.quality ? arg0.quality : 80
-			};
+				var params = {
+					maximumImagesCount: arg0.maxSelectCount ? arg0.maxSelectCount : 9,
+					width: arg0.width ? arg0.width : 0,
+					height: arg0.height ? arg0.height : 0,
+					quality: arg0.quality ? arg0.quality : 100
+				};
 
-			cordova.exec(success, error, "ImagePicker", "getPictures", [params]);
-    	}
+				exec(function(res){
+						var imgs = [];
+						for(var i=0; i<res.length; i++){
+							var obj = {};
+							obj.path = res[i];
+							imgs.push(obj);
+						}
+						resolve(imgs);
+					}, function(err){
+						reject(err);
+					}, "ImagePicker", "getPictures", [params]);
+			}
+		});
+
 	},
 	photoLibrary:function(arg0, success, error) {
     	exec(success, error, "MediaPicker", "photoLibrary", [arg0]);
