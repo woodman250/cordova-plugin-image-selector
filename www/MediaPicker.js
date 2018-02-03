@@ -20,7 +20,7 @@ var MediaPicker = {
 				quality: arg0.quality ? arg0.quality : 80
 			};
 
-			cordova.exec(success, fail, "ImagePicker", "getPictures", [params]);
+			cordova.exec(success, error, "ImagePicker", "getPictures", [params]);
     	}
 	},
 	photoLibrary:function(arg0, success, error) {
