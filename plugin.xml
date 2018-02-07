@@ -16,7 +16,12 @@
         <config-file target="AndroidManifest.xml" parent="/manifest">
             <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
         </config-file>
-        <framework src="com.dmcBig:mediapicker:+" />
+		
+        <framework src="com.dmcBig:mediapicker:+"/>
+		<!--
+		<framework src="src/android/mediaPicker.gradle" custom="true" type="gradleReference" />
+		<resource-file src="libs/mediapicker-2.1.aar" target="libs/mediapicker-2.1.aar" />
+		-->
         <source-file src="src/android/MediaPicker.java" target-dir="src/com/dmc/mediaPickerPlugin" />
     </platform>
 	
